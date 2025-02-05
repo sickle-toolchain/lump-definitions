@@ -6,6 +6,14 @@ macro_rules! define_lump_definitions {
             $($variant = $val),*
         }
 
+        impl Into<usize> for LumpDefinition {
+            fn into(self) -> usize {
+                match self {
+                    $(Self::$variant => $val),*
+                }
+            }
+        }
+
         impl std::fmt::Display for LumpDefinition {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
                 match self {
