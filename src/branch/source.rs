@@ -1,4 +1,6 @@
-pub enum LumpDefinition {
+use crate::define_lump_definitions;
+
+define_lump_definitions!(
     Entities = 0,
     Planes = 1,
     TextureData = 2,
@@ -60,4 +62,4 @@ pub enum LumpDefinition {
     FacesHdr = 58,
     MapFlags = 59,
     OverlayFades = 60,
-}
+);
