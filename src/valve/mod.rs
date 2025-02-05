@@ -1,0 +1,74 @@
+pub mod orange_box;
+pub mod source;
+
+use std::fmt::Debug;
+
+use zerocopy::*;
+use zerocopy_derive::*;
+
+pub const LIGHTMAP_COUNT: usize = 4;
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct Lightmap {
+    mins: [i32; 2],
+    maxs: [i32; 2],
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[repr(C)]
+pub struct PrimitiveCount(u16);
+
+impl PrimitiveCount {
+    pub fn allow_dynamic_shadows(&self) -> bool {
+        self.0 & 0x8000 == 0
+    }
+
+    pub fn set_allow_dynamic_shadows(&mut self, value: bool) {
+        if value {
+            self.0 &= !0x8000;
+        } else {
+            self.0 |= 0x8000;
+        }
+    }
+
+    pub fn primitive_count(&self) -> u16 {
+        self.0 & 0x7FFF
+    }
+
+    pub fn set_primitive_count(&mut self) {
+        assert!((self.0 & 0x8000) == 0);
+        self.0 &= !0x7FFF;
+        self.0 |= self.0 & 0x7FFF;
+    }
+}
+
+impl Debug for PrimitiveCount {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.debug_struct("PrimitiveCount")
+            .field("allow_dynamic_shadows", &self.allow_dynamic_shadows())
+            .field("primitive_count", &self.primitive_count())
+            .finish()
+    }
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct Face {
+    pub plane_index: u16,
+    pub side: i8,
+    pub is_on_node: i8,
+    pub edge_index: i32,
+    pub edge_count: i16,
+    pub texture_info_index: i16,
+    pub displacement_info_index: i16,
+    pub surface_fog_volume_id: i16,
+    pub styles: [u8; LIGHTMAP_COUNT],
+    pub light_offset: i32,
+    pub area: f32,
+    pub lightmap: Lightmap,
+    pub original_face: i32,
+    pub primitive_count: PrimitiveCount,
+    pub primitive_index: u16,
+    pub smoothing_groups: u32,
+}
