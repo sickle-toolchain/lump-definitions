@@ -11,7 +11,7 @@ macro_rules! define_lump_definitions {
         impl std::fmt::Display for LumpDefinition {
             fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
                 match self {
-                    $(Self::$variant => writeln!(f, stringify!($variant))),*
+                    $(Self::$variant => write!(f, stringify!($variant))),*
                 }
             }
         }
