@@ -20,12 +20,20 @@ pub struct Lightmap {
 pub struct PrimitiveCount(u16);
 
 impl PrimitiveCount {
+    pub fn new(primitive_count: u16, allow_dynamic_shadows: bool) -> Self {
+        let mut instance = Self(0);
+        instance.set_primitive_count(primitive_count);
+        instance.set_allow_dynamic_shadows(allow_dynamic_shadows);
+
+        instance
+    }
+
     pub fn allow_dynamic_shadows(&self) -> bool {
         self.0 & 0x8000 == 0
     }
 
-    pub fn set_allow_dynamic_shadows(&mut self, value: bool) {
-        if value {
+    pub fn set_allow_dynamic_shadows(&mut self, allow_dynamic_shadows: bool) {
+        if allow_dynamic_shadows {
             self.0 &= !0x8000;
         } else {
             self.0 |= 0x8000;
