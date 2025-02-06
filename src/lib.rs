@@ -6,10 +6,10 @@ macro_rules! define_lump_definitions {
             $($variant = $val),*
         }
 
-        impl Into<usize> for LumpDefinition {
-            fn into(self) -> usize {
-                match self {
-                    $(Self::$variant => $val),*
+        impl From<LumpDefinition> for usize {
+            fn from(def: LumpDefinition) -> usize {
+                match def {
+                    $(LumpDefinition::$variant => $val),*
                 }
             }
         }
