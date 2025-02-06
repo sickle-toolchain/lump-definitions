@@ -3,7 +3,6 @@ pub mod source;
 
 use std::fmt::Debug;
 
-use zerocopy::*;
 use zerocopy_derive::*;
 
 pub const LIGHTMAP_COUNT: usize = 4;
