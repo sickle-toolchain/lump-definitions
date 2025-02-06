@@ -36,10 +36,10 @@ impl PrimitiveCount {
         self.0 & 0x7FFF
     }
 
-    pub fn set_primitive_count(&mut self) {
-        assert!((self.0 & 0x8000) == 0);
+    pub fn set_primitive_count(&mut self, primitive_count: u16) {
+        assert!((primitive_count & 0x8000) == 0);
         self.0 &= !0x7FFF;
-        self.0 |= self.0 & 0x7FFF;
+        self.0 |= primitive_count & 0x7FFF;
     }
 }
 
