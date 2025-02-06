@@ -80,3 +80,30 @@ pub struct Face {
     pub primitive_index: u16,
     pub smoothing_groups: u32,
 }
+
+#[cfg(test)]
+mod test {
+    use super::PrimitiveCount;
+
+    #[test]
+    fn primitive_count() {
+        let mut primitive_count = PrimitiveCount::new(0, false);
+        assert_eq!(primitive_count.allow_dynamic_shadows(), false);
+        assert_eq!(primitive_count.primitive_count(), 0);
+
+        primitive_count.set_allow_dynamic_shadows(true);
+        assert_eq!(primitive_count.allow_dynamic_shadows(), true);
+        assert_eq!(primitive_count.primitive_count(), 0);
+
+        primitive_count.set_primitive_count(512);
+        assert_eq!(primitive_count.allow_dynamic_shadows(), true);
+        assert_eq!(primitive_count.primitive_count(), 512);
+    }
+
+    #[test]
+    #[should_panic]
+    fn primitive_count_invalid() {
+        let mut primitive_count = PrimitiveCount::new(0, false);
+        primitive_count.set_primitive_count(u16::MAX);
+    }
+}
