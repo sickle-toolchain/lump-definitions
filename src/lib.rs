@@ -1,4 +1,9 @@
-pub mod valve;
+// Marked as private and child branches re-exported so they
+// can re-export common structures defined in their parent,
+// and also be able to define their own.
+mod valve;
+
+pub use valve::{orange_box, source};
 
 macro_rules! define_lump_definitions {
     ($($variant:ident = $val:expr),*,) => {

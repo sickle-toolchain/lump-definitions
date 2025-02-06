@@ -1,3 +1,4 @@
+pub use super::*;
 use crate::define_lump_definitions;
 
 define_lump_definitions!(
