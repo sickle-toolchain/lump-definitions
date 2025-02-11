@@ -7,6 +7,14 @@ use zerocopy_derive::*;
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
 #[repr(C)]
+pub struct Plane {
+    normal: [f32; 3],
+    dist: f32,
+    ty: i32,
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
 pub struct Vertex {
     point: [f32; 3],
 }
