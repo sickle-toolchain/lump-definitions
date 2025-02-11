@@ -104,6 +104,54 @@ pub struct Face {
     pub smoothing_groups: u32,
 }
 
+/// Lights used to illuminate the world
+#[derive(TryFromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(u32)]
+pub enum EmitType {
+    /// 90 degree spotlight
+    Surface = 0,
+    /// simple point light source
+    Point,
+    /// Spotlight with penumbra
+    Spotlight,
+    /// Directional light with no falloff (surface must trace to SKY texture)
+    SkyLight,
+    /// Linear falloff, non-lambertian
+    QuakeLight,
+    /// spherical light source with no falloff (surface must trace to SKY texture)
+    SkyAmbient,
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct WorldLight {
+    pub origin: [f32; 3],
+    pub intensity: [f32; 3],
+    /// For surfaces and spotlights
+    pub normal: [f32; 3],
+    pub cluster: i32,
+    // TODO: it would be really nice if we could use `EmitType` directly here.
+    pub ty: u32,
+    pub style: i32,
+    /// Start of penumbra for emit_spotlight
+    pub penumbra_start: f32,
+    /// End of penumbra for emit_spotlight
+    pub penumbra_end: f32,
+    pub exponent: f32,
+    /// Cutoff distance
+    pub radius: f32,
+    /// Falloff for emit_spotlight + emit_point:
+    /// 1 / (constant_attn + linear_attn * dist + quadratic_attn * dist^2)
+    pub constant_attn: f32,
+    pub linear_attn: f32,
+    pub quadratic_attn: f32,
+    /// Uses a combination of the DWL_FLAGS_ defines.
+    pub flags: i32,
+    pub texinfo: i32,
+    /// Entity that this light is relative to
+    pub owner: i32,
+}
+
 #[cfg(test)]
 mod test {
     use super::PrimitiveCount;
