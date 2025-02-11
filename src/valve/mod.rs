@@ -19,6 +19,16 @@ pub struct Vertex {
     pub point: [f32; 3],
 }
 
+/// Compressed color format
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct ColorRGBExp32 {
+    pub r: u8,
+    pub g: u8,
+    pub b: u8,
+    pub exponent: i8,
+}
+
 pub const LIGHTMAP_COUNT: usize = 4;
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
