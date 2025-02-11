@@ -5,6 +5,12 @@ use std::fmt::Debug;
 
 use zerocopy_derive::*;
 
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct Vertex {
+    point: [f32; 3],
+}
+
 pub const LIGHTMAP_COUNT: usize = 4;
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
