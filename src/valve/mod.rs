@@ -8,15 +8,15 @@ use zerocopy_derive::*;
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
 #[repr(C)]
 pub struct Plane {
-    normal: [f32; 3],
-    dist: f32,
-    ty: i32,
+    pub normal: [f32; 3],
+    pub dist: f32,
+    pub ty: i32,
 }
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
 #[repr(C)]
 pub struct Vertex {
-    point: [f32; 3],
+    pub point: [f32; 3],
 }
 
 pub const LIGHTMAP_COUNT: usize = 4;
@@ -24,8 +24,8 @@ pub const LIGHTMAP_COUNT: usize = 4;
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
 #[repr(C)]
 pub struct Lightmap {
-    mins: [i32; 2],
-    maxs: [i32; 2],
+    pub mins: [i32; 2],
+    pub maxs: [i32; 2],
 }
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
