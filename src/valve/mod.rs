@@ -40,6 +40,19 @@ pub struct Lightmap {
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
 #[repr(C)]
+pub struct TextureInfo {
+    /// [s/t][xyz offset]
+    pub texels: [[f32; 4]; 2],
+    /// [s/t][xyz offset] - length is in units of texels/area
+    pub luxels: [[f32; 4]; 2],
+    /// Miptex flags + overrides
+    pub flags: i32,
+    /// Pointer to texture name, size, etc.
+    pub texture_data: i32,
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[repr(C)]
 pub struct PrimitiveCount(u16);
 
 impl PrimitiveCount {
@@ -100,7 +113,7 @@ pub struct Face {
     pub lightmap: Lightmap,
     pub original_face: i32,
     pub primitive_count: PrimitiveCount,
-    pub primitive_index: u16, 
+    pub primitive_index: u16,
     pub smoothing_groups: u32,
 }
 
