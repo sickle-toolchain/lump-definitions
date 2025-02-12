@@ -100,7 +100,7 @@ pub struct Face {
     pub lightmap: Lightmap,
     pub original_face: i32,
     pub primitive_count: PrimitiveCount,
-    pub primitive_index: u16,
+    pub primitive_index: u16, 
     pub smoothing_groups: u32,
 }
 
@@ -118,7 +118,7 @@ pub enum EmitType {
     SkyLight,
     /// Linear falloff, non-lambertian
     QuakeLight,
-    /// spherical light source with no falloff (surface must trace to SKY texture)
+    /// Spherical light source with no falloff (surface must trace to SKY texture)
     SkyAmbient,
 }
 
