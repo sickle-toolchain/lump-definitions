@@ -7,6 +7,7 @@ pub use valve::{orange_box, source};
 
 macro_rules! define_lump_definitions {
     ($($variant:ident = $val:expr),*,) => {
+        #[derive(Eq, PartialEq, Ord, PartialOrd, Clone, Copy)]
         pub enum LumpDefinition {
             $($variant = $val),*
         }
