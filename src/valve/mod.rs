@@ -38,6 +38,28 @@ pub struct Lightmap {
     pub maxs: [i32; 2],
 }
 
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct SurfaceFlags {}
+
+impl SurfaceFlags {
+    pub const LIGHT: u16 = 0x0001;
+    pub const SKY2D: u16 = 0x0002;
+    pub const SKY: u16 = 0x0004;
+    pub const WARP: u16 = 0x0008;
+    pub const TRANS: u16 = 0x0010;
+    pub const NOPORTAL: u16 = 0x0020;
+    pub const TRIGGER: u16 = 0x0040;
+    pub const NODRAW: u16 = 0x0080;
+    pub const HINT: u16 = 0x0100;
+    pub const SKIP: u16 = 0x0200;
+    pub const NOLIGHT: u16 = 0x0400;
+    pub const BUMPLIGHT: u16 = 0x0800;
+    pub const NOSHADOWS: u16 = 0x1000;
+    pub const NODECALS: u16 = 0x2000;
+    pub const NOCHOP: u16 = 0x4000;
+    pub const HITBOX: u16 = 0x8000;
+}
+
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
 #[repr(C)]
 pub struct TextureInfo {
