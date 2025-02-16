@@ -187,6 +187,17 @@ pub struct WorldLight {
     pub owner: i32,
 }
 
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct Model {
+    mins: [f32; 3],
+    maxs: [f32; 3],
+    origin: [f32; 3],
+    head_node: i32,
+    face_index: i32,
+    face_count: i32,
+}
+
 #[cfg(test)]
 mod test {
     use super::PrimitiveCount;
