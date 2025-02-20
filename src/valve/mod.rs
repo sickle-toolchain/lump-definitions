@@ -19,6 +19,12 @@ pub struct Vertex {
     pub point: [f32; 3],
 }
 
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct Edge {
+    pub edge: [u16; 2],
+}
+
 /// Compressed color format
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
 #[repr(C)]
