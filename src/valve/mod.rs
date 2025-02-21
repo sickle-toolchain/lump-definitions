@@ -26,7 +26,7 @@ pub struct Edge {
 }
 
 /// Compressed color format
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy)]
 #[repr(C)]
 pub struct ColorRGBExp32 {
     pub r: u8,
