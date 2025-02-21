@@ -81,6 +81,17 @@ pub struct TextureInfo {
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
 #[repr(C)]
+pub struct TextureData {
+	pub reflectivity: [f32; 3],
+	pub name_index: i32,
+    pub width: i32,
+    pub height: i32,
+    pub view_width: i32,
+    pub view_height: i32,
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[repr(C)]
 pub struct PrimitiveCount(u16);
 
 impl PrimitiveCount {
