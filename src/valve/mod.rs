@@ -75,8 +75,8 @@ pub struct TextureInfo {
     pub luxels: [[f32; 4]; 2],
     /// Miptex flags + overrides
     pub flags: i32,
-    /// Pointer to texture name, size, etc.
-    pub texture_data: i32,
+    /// Index into texture data lump
+    pub texture_data_index: i32,
 }
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
