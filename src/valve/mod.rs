@@ -68,11 +68,18 @@ impl SurfaceFlags {
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
 #[repr(C)]
+pub struct TextureMapping {
+    pub xyz: [f32; 3],
+    pub offset: f32,
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[repr(C)]
 pub struct TextureInfo {
     /// [s/t][xyz offset]
-    pub texels: [[f32; 4]; 2],
+    pub texels: [TextureMapping; 2],
     /// [s/t][xyz offset] - length is in units of texels/area
-    pub luxels: [[f32; 4]; 2],
+    pub luxels: [TextureMapping; 2],
     /// Miptex flags + overrides
     pub flags: i32,
     /// Index into texture data lump
@@ -82,8 +89,8 @@ pub struct TextureInfo {
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
 #[repr(C)]
 pub struct TextureData {
-	pub reflectivity: [f32; 3],
-	pub name_index: i32,
+    pub reflectivity: [f32; 3],
+    pub name_index: i32,
     pub width: i32,
     pub height: i32,
     pub view_width: i32,
