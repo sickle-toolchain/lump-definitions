@@ -66,7 +66,7 @@ impl SurfaceFlags {
     pub const HITBOX: u16 = 0x8000;
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Clone, Copy)]
 #[repr(C)]
 pub struct TextureMapping {
     pub xyz: [f32; 3],
