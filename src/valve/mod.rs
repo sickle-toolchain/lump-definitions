@@ -37,7 +37,7 @@ pub struct ColorRGBExp32 {
 
 pub const LIGHTMAP_COUNT: usize = 4;
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
 #[repr(C)]
 pub struct Lightmap {
     pub mins: [i32; 2],
