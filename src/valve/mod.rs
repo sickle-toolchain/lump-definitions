@@ -214,12 +214,12 @@ pub struct WorldLight {
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
 #[repr(C)]
 pub struct Model {
-    mins: [f32; 3],
-    maxs: [f32; 3],
-    origin: [f32; 3],
-    head_node: i32,
-    face_index: i32,
-    face_count: i32,
+    pub mins: [f32; 3],
+    pub maxs: [f32; 3],
+    pub origin: [f32; 3],
+    pub head_node: i32,
+    pub face_index: i32,
+    pub face_count: i32,
 }
 
 #[cfg(test)]
