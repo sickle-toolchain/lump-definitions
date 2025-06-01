@@ -97,13 +97,13 @@ pub struct TextureData {
     pub view_height: i32,
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Default)]
 #[repr(C)]
 pub struct PrimitiveCount(u16);
 
 impl PrimitiveCount {
     pub fn new(primitive_count: u16, allow_dynamic_shadows: bool) -> Self {
-        let mut instance = Self(0);
+        let mut instance = Self::default();
         instance.set_primitive_count(primitive_count);
         instance.set_allow_dynamic_shadows(allow_dynamic_shadows);
 
