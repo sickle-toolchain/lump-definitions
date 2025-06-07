@@ -25,6 +25,12 @@ pub struct Edge {
     pub edge: [u16; 2],
 }
 
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[repr(C)]
+pub struct SurfaceEdge {
+    pub edge_index: i32,
+}
+
 /// Compressed color format
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
 #[repr(C)]
