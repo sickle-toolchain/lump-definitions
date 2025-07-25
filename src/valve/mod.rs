@@ -5,7 +5,7 @@ use std::fmt::Debug;
 
 use zerocopy_derive::*;
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
 #[repr(C)]
 pub struct Plane {
     pub normal: [f32; 3],
@@ -13,19 +13,19 @@ pub struct Plane {
     pub ty: i32,
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
 #[repr(C)]
 pub struct Vertex {
     pub point: [f32; 3],
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
 #[repr(C)]
 pub struct Edge {
     pub edge: [u16; 2],
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
 #[repr(C)]
 pub struct SurfaceEdge {
     pub edge_index: i32,
@@ -72,7 +72,7 @@ impl SurfaceFlags {
     pub const HITBOX: u16 = 0x8000;
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Clone, Copy)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Clone, Copy, Default)]
 #[repr(C)]
 pub struct TextureMapping {
     pub xyz: [f32; 3],
