@@ -72,14 +72,14 @@ impl SurfaceFlags {
     pub const HITBOX: u16 = 0x8000;
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Clone, Copy, Default)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Default, Clone, Copy)]
 #[repr(C)]
 pub struct TextureMapping {
     pub xyz: [f32; 3],
     pub offset: f32,
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Default, Clone, Copy)]
 #[repr(C)]
 pub struct TextureInfo {
     /// [s/t][xyz offset]
@@ -92,7 +92,7 @@ pub struct TextureInfo {
     pub texture_data_index: i32,
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Default, Clone, Copy)]
 #[repr(C)]
 pub struct TextureData {
     pub reflectivity: [f32; 3],
@@ -103,7 +103,7 @@ pub struct TextureData {
     pub view_height: i32,
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Default)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Default, Clone, Copy)]
 #[repr(C)]
 pub struct PrimitiveCount(u16);
 
@@ -148,7 +148,7 @@ impl Debug for PrimitiveCount {
     }
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy)]
 #[repr(C)]
 pub struct Face {
     pub plane_index: u16,
@@ -170,7 +170,7 @@ pub struct Face {
 }
 
 /// Lights used to illuminate the world
-#[derive(TryFromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(TryFromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy)]
 #[repr(u32)]
 pub enum EmitType {
     /// 90 degree spotlight
@@ -187,7 +187,7 @@ pub enum EmitType {
     SkyAmbient,
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy)]
 #[repr(C)]
 pub struct WorldLight {
     pub origin: [f32; 3],
@@ -217,7 +217,7 @@ pub struct WorldLight {
     pub owner: i32,
 }
 
-#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug)]
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy)]
 #[repr(C)]
 pub struct Model {
     pub mins: [f32; 3],
