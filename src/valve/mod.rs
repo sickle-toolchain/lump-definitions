@@ -1,7 +1,7 @@
 pub mod orange_box;
 pub mod source;
 
-use std::fmt::Debug;
+use core::fmt::Debug;
 
 use zerocopy_derive::*;
 
@@ -140,7 +140,7 @@ impl PrimitiveCount {
 }
 
 impl Debug for PrimitiveCount {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
         f.debug_struct("PrimitiveCount")
             .field("allow_dynamic_shadows", &self.allow_dynamic_shadows())
             .field("primitive_count", &self.primitive_count())

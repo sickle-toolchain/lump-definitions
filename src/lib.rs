@@ -1,3 +1,5 @@
+#![cfg_attr(not(feature = "std"), no_std)]
+
 // Marked as private and child branches re-exported so they
 // can re-export common structures defined in their parent,
 // and also be able to define their own.
@@ -12,7 +14,7 @@ macro_rules! define_lump_definitions {
             $($variant = $val),*
         }
 
-        impl From<LumpDefinition> for usize {
+        impl core::convert::From<LumpDefinition> for usize {
             fn from(def: LumpDefinition) -> usize {
                 match def {
                     $(LumpDefinition::$variant => $val),*
@@ -20,8 +22,8 @@ macro_rules! define_lump_definitions {
             }
         }
 
-        impl std::fmt::Display for LumpDefinition {
-            fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        impl core::fmt::Display for LumpDefinition {
+            fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
                 match self {
                     $(Self::$variant => write!(f, stringify!($variant))),*
                 }

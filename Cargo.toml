@@ -3,6 +3,10 @@ name = "lump-definitions"
 version = "0.1.0"
 edition = "2021"
 
+[features]
+default = ["std"]
+std = ["zerocopy/std"]
+
 [dependencies]
 zerocopy = "0.8.16"
 zerocopy-derive = "0.8.16"
