@@ -170,7 +170,19 @@ pub struct Face {
 }
 
 /// Lights used to illuminate the world
-#[derive(TryFromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy)]
+#[derive(
+    TryFromBytes,
+    IntoBytes,
+    KnownLayout,
+    Immutable,
+    Debug,
+    Clone,
+    Copy,
+    PartialEq,
+    Eq,
+    PartialOrd,
+    Ord,
+)]
 #[repr(u32)]
 pub enum EmitType {
     /// 90 degree spotlight
