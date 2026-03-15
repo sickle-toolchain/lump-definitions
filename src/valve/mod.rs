@@ -3,6 +3,7 @@ pub mod source;
 
 use core::fmt::Debug;
 
+use derive_more::TryFrom;
 use zerocopy_derive::*;
 
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
@@ -172,6 +173,7 @@ pub struct Face {
 /// Lights used to illuminate the world
 #[derive(
     TryFromBytes,
+    TryFrom,
     IntoBytes,
     KnownLayout,
     Immutable,
@@ -183,6 +185,7 @@ pub struct Face {
     PartialOrd,
     Ord,
 )]
+#[try_from(repr)]
 #[repr(u32)]
 pub enum EmitType {
     /// 90 degree spotlight
