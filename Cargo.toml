@@ -8,6 +8,6 @@ default = ["std"]
 std = ["zerocopy/std"]
 
 [dependencies]
-derive_more = { version = "2.1.1", features = ["try_from"] }
+derive_more = { version = "2.1.1", default-features = false, features = ["try_from"] }
 zerocopy = "0.8.16"
 zerocopy-derive = "0.8.16"
