@@ -149,6 +149,57 @@ impl Debug for PrimitiveCount {
     }
 }
 
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Default, Clone, Copy)]
+#[repr(C)]
+pub struct AreaFlags(i16);
+
+impl AreaFlags {
+    pub fn new(area: u16, flags: u8) -> Self {
+        let mut instance = Self::default();
+        instance.set_area(area);
+        instance.set_flags(flags);
+        instance
+    }
+
+    pub fn area(&self) -> u16 {
+        (self.0 as u16) & 0x01FF
+    }
+
+    pub fn set_area(&mut self, area: u16) {
+        assert!((area & !0x01FF) == 0);
+        let bits = self.0 as u16;
+        self.0 = ((bits & !0x01FF) | (area & 0x01FF)) as i16;
+    }
+
+    pub fn flags(&self) -> u8 {
+        (((self.0 as u16) >> 9) & 0x7F) as u8
+    }
+
+    pub fn set_flags(&mut self, flags: u8) {
+        assert!((flags & 0x80) == 0);
+        let bits = self.0 as u16;
+        self.0 = ((bits & 0x01FF) | (((flags as u16) & 0x7F) << 9)) as i16;
+    }
+}
+
+impl Debug for AreaFlags {
+    fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+        f.debug_struct("AreaFlags")
+            .field("area", &self.area())
+            .field("flags", &self.flags())
+            .finish()
+    }
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct LeafFlags {}
+
+impl LeafFlags {
+    pub const SKY: u8 = 0x01;
+    pub const RADIAL: u8 = 0x02;
+    pub const SKY2D: u8 = 0x04;
+}
+
 #[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy)]
 #[repr(C)]
 pub struct Face {
@@ -243,9 +294,92 @@ pub struct Model {
     pub face_count: i32,
 }
 
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
+#[repr(C)]
+pub struct Brush {
+    pub first_side: i32,
+    pub num_sides: i32,
+    pub contents: i32,
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
+#[repr(C)]
+pub struct BrushSide {
+    pub plane_num: u16,
+    pub tex_info: i16,
+    pub disp_info: i16,
+    pub bevel: i16,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash)]
+pub struct Contents {}
+
+impl Contents {
+    pub const SOLID: i32 = 0x1;
+    pub const WINDOW: i32 = 0x2;
+    pub const AUX: i32 = 0x4;
+    pub const GRATE: i32 = 0x8;
+    pub const SLIME: i32 = 0x10;
+    pub const WATER: i32 = 0x20;
+    pub const MIST: i32 = 0x40;
+    pub const OPAQUE: i32 = 0x80;
+    pub const TESTFOGVOLUME: i32 = 0x100;
+    pub const TEAM1: i32 = 0x800;
+    pub const TEAM2: i32 = 0x1000;
+    pub const IGNORE_NODRAW_OPAQUE: i32 = 0x2000;
+    pub const MOVEABLE: i32 = 0x4000;
+    pub const AREAPORTAL: i32 = 0x8000;
+    pub const PLAYERCLIP: i32 = 0x10000;
+    pub const MONSTERCLIP: i32 = 0x20000;
+    pub const CURRENT_0: i32 = 0x40000;
+    pub const CURRENT_90: i32 = 0x80000;
+    pub const CURRENT_180: i32 = 0x100000;
+    pub const CURRENT_270: i32 = 0x200000;
+    pub const CURRENT_UP: i32 = 0x400000;
+    pub const CURRENT_DOWN: i32 = 0x800000;
+    pub const ORIGIN: i32 = 0x1000000;
+    pub const MONSTER: i32 = 0x2000000;
+    pub const DEBRIS: i32 = 0x4000000;
+    pub const DETAIL: i32 = 0x8000000;
+    pub const TRANSLUCENT: i32 = 0x10000000;
+    pub const LADDER: i32 = 0x20000000;
+    pub const HITBOX: i32 = 0x40000000;
+}
+
+pub const MASK_OPAQUE: i32 = Contents::SOLID | Contents::MOVEABLE | Contents::OPAQUE;
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
+#[repr(C)]
+pub struct Node {
+    pub plane_num: i32,
+    pub children: [i32; 2],
+    pub mins: [i16; 3],
+    pub maxs: [i16; 3],
+    pub first_face: u16,
+    pub num_faces: u16,
+    pub area: i16,
+    pub _padding: i16,
+}
+
+#[derive(FromBytes, IntoBytes, KnownLayout, Immutable, Debug, Clone, Copy, Default)]
+#[repr(C)]
+pub struct Leaf {
+    pub contents: i32,
+    pub cluster: i16,
+    pub area_flags: AreaFlags,
+    pub mins: [i16; 3],
+    pub maxs: [i16; 3],
+    pub first_leaf_face: u16,
+    pub num_leaf_faces: u16,
+    pub first_leaf_brush: u16,
+    pub num_leaf_brushes: u16,
+    pub leaf_water_data_id: i16,
+    pub _padding: i16,
+}
+
 #[cfg(test)]
 mod test {
-    use super::PrimitiveCount;
+    use super::{AreaFlags, LeafFlags, PrimitiveCount};
 
     #[test]
     fn primitive_count() {
@@ -267,5 +401,36 @@ mod test {
     fn primitive_count_invalid() {
         let mut primitive_count = PrimitiveCount::new(0, false);
         primitive_count.set_primitive_count(u16::MAX);
+    }
+
+    #[test]
+    fn area_flags() {
+        let mut af = AreaFlags::new(0, 0);
+        assert_eq!(af.area(), 0);
+        assert_eq!(af.flags(), 0);
+
+        af.set_area(511);
+        assert_eq!(af.area(), 511);
+        assert_eq!(af.flags(), 0);
+
+        af.set_flags(LeafFlags::SKY | LeafFlags::SKY2D);
+        assert_eq!(af.area(), 511);
+        assert_eq!(af.flags(), LeafFlags::SKY | LeafFlags::SKY2D);
+
+        af.set_area(42);
+        assert_eq!(af.area(), 42);
+        assert_eq!(af.flags(), LeafFlags::SKY | LeafFlags::SKY2D);
+    }
+
+    #[test]
+    #[should_panic]
+    fn area_flags_area_overflow() {
+        AreaFlags::new(0, 0).set_area(512);
+    }
+
+    #[test]
+    #[should_panic]
+    fn area_flags_flags_overflow() {
+        AreaFlags::new(0, 0).set_flags(0x80);
     }
 }
